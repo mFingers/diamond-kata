@@ -11,8 +11,10 @@ type Letters =
         Arb.Default.Char()
         |> Arb.filter (fun c -> 'A' <= c && c <= 'Z')
 
+type UpperCaseCharPropertyAttribute() =
+    inherit PropertyAttribute(Arbitrary = [| typeof<Letters> |] )
 
-[<Property(Arbitrary = [| typeof<Letters> |] )>]
+[<UpperCaseCharProperty>]
 let ``Diamond is non-empty`` (letter:char) =
     let actual = Diamond.make letter
     stringExists actual
