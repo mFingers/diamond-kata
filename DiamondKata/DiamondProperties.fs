@@ -11,6 +11,14 @@ let split (x:string) =
 
 let trim (x:string) = x.Trim()
 
+let leadingSpaces (x:string) =
+    let indexOfNonSpace = x.IndexOfAny([| 'A' .. 'Z' |])
+    x.Substring(0, indexOfNonSpace)
+
+let trailingSpaces (x:string) =
+    let indexOfNonSpace = x.LastIndexOfAny([| 'A' .. 'Z' |])
+    x.Substring(indexOfNonSpace+1)
+
 type Letters =
     static member Char() =
         Arb.Default.Char()
@@ -30,3 +38,10 @@ let ``First row contains 'A'`` (letter:char) =
 
     let rows = split actual
     rows |> Seq.head |> trim = "A"
+
+[<UpperCaseCharProperty>]
+let ``All rows must have a symmetric contour`` (letter:char) =
+    let actual = Diamond.make letter
+
+    let rows = split actual
+    rows |> Array.forall (fun r -> (leadingSpaces r) = (trailingSpaces r))

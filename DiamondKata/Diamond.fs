@@ -1,3 +1,3 @@
 ﻿module Diamond
 
-let make letter = "       A    "
+let make letter = "       A       "
