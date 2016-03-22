@@ -6,6 +6,11 @@ open FsCheck.Xunit
 
 let stringExists = not << String.IsNullOrWhiteSpace
 
+let split (x:string) =
+    x.Split([| Environment.NewLine |], StringSplitOptions.None)
+
+let trim (x:string) = x.Trim()
+
 type Letters =
     static member Char() =
         Arb.Default.Char()
@@ -18,3 +23,10 @@ type UpperCaseCharPropertyAttribute() =
 let ``Diamond is non-empty`` (letter:char) =
     let actual = Diamond.make letter
     stringExists actual
+
+[<UpperCaseCharProperty>]
+let ``First row contains 'A'`` (letter:char) =
+    let actual = Diamond.make letter
+
+    let rows = split actual
+    rows |> Seq.head |> trim = "A"
