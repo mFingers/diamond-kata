@@ -45,3 +45,19 @@ let ``All rows must have a symmetric contour`` (letter:char) =
 
     let rows = split actual
     rows |> Array.forall (fun r -> (leadingSpaces r) = (trailingSpaces r))
+
+[<UpperCaseCharProperty>]
+let ``Top of figure has correct letters in correct order`` (letter:char) =
+    let actual = Diamond.make letter
+
+    let expected = ['A' .. letter]
+
+    let rows = split actual
+    let firstNonWhiteSpaceLetters =
+        rows
+        |> Seq.take expected.Length
+        |> Seq.map trim
+        |> Seq.map Seq.head
+        |> Seq.toList 
+
+    expected = firstNonWhiteSpaceLetters
