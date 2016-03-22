@@ -81,3 +81,11 @@ let ``All rows must be horizontally symmetrical`` (letter:char) =
         |> Seq.toList
 
     topRows = bottomRows
+
+[<UpperCaseCharProperty>]
+let ``Diamond is as wide as it is high`` (letter:char) =
+    let actual = Diamond.make letter
+
+    let rows = split actual
+    let expected = rows.Length
+    rows |> Array.forall (fun r -> r.Length = expected)
