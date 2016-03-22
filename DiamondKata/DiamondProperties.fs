@@ -40,7 +40,7 @@ let ``First row contains 'A'`` (letter:char) =
     rows |> Seq.head |> trim = "A"
 
 [<UpperCaseCharProperty>]
-let ``All rows must have a symmetric contour`` (letter:char) =
+let ``All rows must be vertically symmetrical`` (letter:char) =
     let actual = Diamond.make letter
 
     let rows = split actual
@@ -61,3 +61,23 @@ let ``Top of figure has correct letters in correct order`` (letter:char) =
         |> Seq.toList 
 
     expected = firstNonWhiteSpaceLetters
+
+[<UpperCaseCharProperty>]
+let ``All rows must be horizontally symmetrical`` (letter:char) =
+    let actual = Diamond.make letter
+
+    let rows = split actual
+    let topRows =
+        rows
+        |> Seq.takeWhile (fun r -> not (r.Contains(string letter)))
+        |> Seq.toList
+
+    let bottomRows =
+        rows
+        |> Seq.skipWhile (fun r -> not (r.Contains(string letter)))
+        |> Seq.skip 1
+        |> Seq.toList
+        |> Seq.rev
+        |> Seq.toList
+
+    topRows = bottomRows
